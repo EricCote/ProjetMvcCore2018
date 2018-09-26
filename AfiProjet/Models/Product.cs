@@ -23,6 +23,7 @@ namespace AfiProjet.Models
         [StringLength(25)]
         public string ProductNumber { get; set; }
         [StringLength(15)]
+        [DataType("Color")]
         public string Color { get; set; }
         [Column(TypeName = "money")]
         public decimal StandardCost { get; set; }
@@ -39,6 +40,7 @@ namespace AfiProjet.Models
         public int? ProductModelId { get; set; }
         [Column(TypeName = "datetime")]
         [DataType(DataType.Date)]
+        [UIHint("DateRouge")]
         public DateTime SellStartDate { get; set; }
         [Column(TypeName = "datetime")]
         [DataType(DataType.Date)]
@@ -46,7 +48,7 @@ namespace AfiProjet.Models
         [Column(TypeName = "datetime")]
         [DataType(DataType.Date)]
         public DateTime? DiscontinuedDate { get; set; }
-        public byte[] ThumbNailPhoto { get; set; }
+        //public byte[] ThumbNailPhoto { get; set; }
         [StringLength(50)]
         public string ThumbnailPhotoFileName { get; set; }
         [Column("rowguid")]
@@ -62,5 +64,17 @@ namespace AfiProjet.Models
         public ProductModel ProductModel { get; set; }
         [InverseProperty("Product")]
         public ICollection<SalesOrderDetail> SalesOrderDetails { get; set; }
+        public ProductImage ProductImage { get; set; }
     }
+
+
+    [Table("Product", Schema = "SalesLT")]
+    public class ProductImage {
+        [Column("ProductID")]
+        [Key()]
+        public int ProductId { get; set; }
+        public byte[] ThumbNailPhoto { get; set; }
+        public Product Product { get; set; }
+    }
+
 }

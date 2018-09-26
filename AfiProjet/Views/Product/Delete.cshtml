@@ -72,10 +72,10 @@
             @Html.DisplayFor(model => model.DiscontinuedDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ThumbNailPhoto)
+            Photo
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ThumbNailPhoto)
+            <img src="@Url.Action("GetPicture",new { id = Model.ProductId })" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ThumbnailPhotoFileName)

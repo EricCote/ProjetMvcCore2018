@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<AfiProjet.Models.Product>
 
+@using System.Linq
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -62,12 +64,25 @@
 <div class="text-center">
     @if (ViewBag.noPage > 0)
     {
-        <a asp-action="index" asp-route-id="@(ViewBag.noPage-1)"><i class="fas fa-arrow-alt-circle-left fa-lg"></i></a>
+        @*@Html.ActionLink("<i class='fas fa-arrow-alt-circle-left fa-lg'></i>",
+                         "ProductByCategory",
+                         new { id=ViewBag.noPage-1,
+                             categoryName = Model.First().ProductCategory.Name
+                         })*@
+        @*<a href="@Url.Action("ProductByCategory",new {
+                   id =ViewBag.noPage-1,
+                   categoryName = Model.First().ProductCategory.Name
+            })"><i class='fas fa-arrow-alt-circle-left fa-lg'></i></a>*@       
+        <a asp-action="ProductByCategory"  
+           asp-route-categoryName="@(Model.First().ProductCategory.Name)"  
+           asp-route-id="@(ViewBag.noPage-1)">
+                <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+        </a>
     }
     @(ViewBag.noPage + 1)
     @if (ViewBag.noPage < ViewBag.nbPages-1)
     {
-        <a asp-action="index" asp-route-id="@(ViewBag.noPage+1)"><i class="fas fa-arrow-alt-circle-right fa-lg"></i></a>
+        <a asp-action="ProductByCategory" asp-route-categoryName="@(Model.First().ProductCategory.Name)"   asp-route-id="@(ViewBag.noPage+1)"><i class="fas fa-arrow-alt-circle-right fa-lg"></i></a>
     }
 
 

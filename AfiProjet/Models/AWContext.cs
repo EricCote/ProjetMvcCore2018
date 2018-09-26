@@ -12,6 +12,7 @@ namespace AfiProjet.Models
 
         }
 
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }

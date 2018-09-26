@@ -71,10 +71,10 @@
             @Html.DisplayFor(model => model.DiscontinuedDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ThumbNailPhoto)
+           Photo
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ThumbNailPhoto)
+            <img src="@Url.Action("GetPicture",new { id = Model.ProductId })" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ThumbnailPhotoFileName)
@@ -110,5 +110,6 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a href="javascript: history.back();" >Back to List</a>
 </div>
+

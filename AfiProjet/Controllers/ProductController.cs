@@ -18,12 +18,59 @@ namespace AfiProjet.Controllers
             _db = context;
         }
 
-        // GET: Product
-        public async Task<IActionResult> Index()
+        [Route("Category/{categoryName}/{id=0}")]
+        public async Task<IActionResult> ProductByCategory(string categoryName, int id)
         {
-            var aWContext = _db.Products.Include(p => p.ProductCategory).Include(p => p.ProductModel);
-            return View(await aWContext.ToListAsync());
+            int noPage = id;
+            var requete1 = _db.Products
+                           .Include(p => p.ProductCategory)
+                           .Include(p => p.ProductModel)
+                           .Where(p => p.ProductCategory.Name == categoryName)
+                           .OrderBy(p => p.Name)
+                           .Skip(10 * noPage)
+                           .Take(10);
+
+            int nbProduits = _db.Products
+                             .Count(p => p.ProductCategory.Name == categoryName);
+            int nbPages = ((nbProduits - 1) / 10) + 1;
+            ViewBag.nbPages = nbPages;
+            ViewBag.noPage = noPage;
+
+            return View(await requete1.ToListAsync());
         }
+
+
+
+        // GET: Product
+        public async Task<IActionResult> Index(int id = 0)
+        {
+            int noPage = id;
+            var requete1 = _db.Products.
+                             Include(p => p.ProductCategory).
+                             Include(p => p.ProductModel)
+                            .OrderBy(p => p.Name)
+                            .Skip(10 * noPage)
+                            .Take(10);
+
+            int nbProduits = _db.Products.Count();
+            int nbPages = ((nbProduits - 1) / 10) + 1;
+            ViewBag.nbPages = nbPages;
+            ViewBag.noPage = noPage;
+                
+            return View( await requete1.ToListAsync());
+        }
+
+        [Route("Product/{id}.gif")]
+        public FileResult GetPicture(int id)
+        {
+            ProductImage product = _db.ProductImages.Find(id);
+            if (product?.ThumbNailPhoto == null)
+            {
+                return File("/images/error.gif", "image/gif");
+            }
+            return File(product.ThumbNailPhoto, "image/gif");
+        }
+
 
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int? id)

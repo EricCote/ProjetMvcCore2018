@@ -14,4 +14,16 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Product\ProductByCategory.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\DisplayTemplates\DateRouge.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\EditorTemplates\Color.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>
