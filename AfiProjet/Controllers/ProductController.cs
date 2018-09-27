@@ -13,10 +13,35 @@ namespace AfiProjet.Controllers
     {
         private readonly AWContext _db;
 
+
         public ProductController(AWContext context)
         {
             _db = context;
         }
+
+        public ActionResult Search(string id)
+        {
+            return View("Search", id);
+        }
+
+
+
+        public async Task<PartialViewResult> TableResult(string filter="")
+        {
+        
+            var requete1 = _db.Products.
+                             Include(p => p.ProductCategory).
+                             Include(p => p.ProductModel)
+                            .Where(p => p.Name.Contains(filter) && 
+                                        !string.IsNullOrEmpty(filter)  )
+                            .OrderBy(p => p.Name);
+             
+            return PartialView("_ProductGrid", await requete1.ToListAsync());
+        }
+
+
+
+
 
         [Route("Category/{categoryName}/{id=0}")]
         public async Task<IActionResult> ProductByCategory(string categoryName, int id)
@@ -41,7 +66,7 @@ namespace AfiProjet.Controllers
                                                "Name", 
                                                categoryName);
 
-            return View(await requete1.ToListAsync());
+            return View( await requete1.ToListAsync());
 
         }
 

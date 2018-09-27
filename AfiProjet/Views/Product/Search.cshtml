@@ -1,0 +1,129 @@
+﻿<h1>Recherche</h1>
+
+<p>Entrez la recherche de produits</p>
+
+<form id="myForm">
+    <input type="text" class="form-control" autofocus="autofocus"
+           id="filter" name="filter" value="@Model" />
+    <button class="btn btn-default" id="btnGetHtml">Obtenir Html</button>
+    <button class="btn btn-info" id="btnGetJson">Obtenir Json</button>
+</form>
+
+<div id="result">
+    Entrez une recherche en haut!
+</div>
+
+<script>
+    const myForm = document.getElementById("myForm");
+    const result = document.getElementById("result");
+    const btnGetHtml = document.getElementById("btnGetHtml");
+    const btnGetJson = document.getElementById("btnGetJson");
+
+    const getFilteredData = async e => {
+        e.preventDefault();
+        const partialResults = await fetch(
+                 "/Product/TableResult?filter=" + filter.value,
+                 { credentials: 'same-origin' });
+        const text = await partialResults.text();
+     
+        history.pushState({
+                  result: text,
+                  filter: filter.value
+            },
+            "ignored",
+            "/Product/Search/" + filter.value);
+
+        result.innerHTML = text;
+    };
+
+    const restoreData = e => {
+        result.innerHTML = e.state.result;
+        filter.value = e.state.filter;
+        //console.log("data restored for " + e.state.filter);
+    };
+
+    const callJson = async e => {
+        e.preventDefault();
+        const formatting = new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD'
+        });
+        const partialResults = await fetch("/api/search?filter=" + filter.value,
+            { credentials: 'same-origin' });
+        const json = await partialResults.json();
+        let rows = json.map(item =>
+        `<tr>
+            <td>
+               ${item.name}
+            </td>
+
+            <td>
+                <span style="background-color:${item.color}"
+                       class="label label-default"
+                >${item.color || ''}</span>
+            </td>
+
+            <td>
+               ${formatting.format(item.listPrice)}
+            </td>
+
+            <td>
+               ${item.modifiedDate}
+            </td>
+            <td>
+                <img src="/product/${item.productId}.gif" />
+            </td> 
+            <td>
+              ${item.category}
+            </td>
+
+            <td>
+                <a  href="/product/details/${item.productId}">Details</a> 
+            </td>
+        </tr>`    );
+
+
+        let table =
+     `<table class='table'>
+       <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                ListPrice
+            </th>
+            <th>
+                ModifiedDate
+            </th>
+            <th>
+                ThumbNailPhoto
+            </th>
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+       </thead>
+           <tbody>
+                ${rows.join('')}
+            </tbody>
+        </table>
+                    `;
+
+
+    result.innerHTML = table;
+   };
+   
+
+
+
+    btnGetHtml.addEventListener("click", getFilteredData);
+    window.addEventListener("popstate", restoreData);
+    btnGetJson.addEventListener("click", callJson);
+</script>
+
+
