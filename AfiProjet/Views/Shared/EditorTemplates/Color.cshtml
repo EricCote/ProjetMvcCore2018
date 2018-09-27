@@ -1,7 +1,11 @@
 ﻿@model  string
+<input style="@($"background-color: {Model}")" 
+       asp-for="@Model"  class="form-control"  />
 
-<input type="text" style="@($"background-color: {Model}")" 
-       value="@Model" />
+@Html.TextBoxFor(M=>Model,new {
+    @class = "form-control",
+    style = $"background-color: {Model}"
+})
 
 
 

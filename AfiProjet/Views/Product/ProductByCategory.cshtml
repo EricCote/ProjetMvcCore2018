@@ -11,78 +11,34 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-         
-            <th>
-                @Html.DisplayNameFor(model => model.ListPrice)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.SellStartDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-         
-            <td>
-                @Html.DisplayFor(modelItem => item.ListPrice)
-            </td>
-          
-            <td>
-                @Html.DisplayFor(modelItem => item.SellStartDate)
-            </td>
-          
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId" title="Edit"><i class="fas fa-edit fa-lg"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId" title="Details"><i class="fas fa-file-alt fa-lg"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId" title="Delete"><i class="fas fa-trash-alt fa-lg"></i></a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<partial name="_dropdown" />
+
+<partial name="_ProductGrid" />
 
 <div class="text-center">
     @if (ViewBag.noPage > 0)
     {
         @*@Html.ActionLink("<i class='fas fa-arrow-alt-circle-left fa-lg'></i>",
-                         "ProductByCategory",
-                         new { id=ViewBag.noPage-1,
-                             categoryName = Model.First().ProductCategory.Name
-                         })*@
+            "ProductByCategory",
+            new { id=ViewBag.noPage-1,
+                categoryName = Model.First().ProductCategory.Name
+            })*@
         @*<a href="@Url.Action("ProductByCategory",new {
                    id =ViewBag.noPage-1,
                    categoryName = Model.First().ProductCategory.Name
-            })"><i class='fas fa-arrow-alt-circle-left fa-lg'></i></a>*@       
-        <a asp-action="ProductByCategory"  
-           asp-route-categoryName="@(Model.First().ProductCategory.Name)"  
+            })"><i class='fas fa-arrow-alt-circle-left fa-lg'></i></a>*@
+        <a asp-action="ProductByCategory"
+           asp-route-categoryName="@(Model.First().ProductCategory.Name)"
            asp-route-id="@(ViewBag.noPage-1)">
-                <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+            <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
         </a>
     }
     @(ViewBag.noPage + 1)
-    @if (ViewBag.noPage < ViewBag.nbPages-1)
+    @if (ViewBag.noPage < ViewBag.nbPages - 1)
     {
-        <a asp-action="ProductByCategory" asp-route-categoryName="@(Model.First().ProductCategory.Name)"   asp-route-id="@(ViewBag.noPage+1)"><i class="fas fa-arrow-alt-circle-right fa-lg"></i></a>
+        <a asp-action="ProductByCategory" asp-route-categoryName="@(Model.First().ProductCategory.Name)" asp-route-id="@(ViewBag.noPage+1)"><i class="fas fa-arrow-alt-circle-right fa-lg"></i></a>
     }
 
 

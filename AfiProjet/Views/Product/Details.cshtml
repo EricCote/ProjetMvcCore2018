@@ -1,5 +1,7 @@
 ﻿@model AfiProjet.Models.Product
-
+@using AfiProjet.TagHelpers
+@using AfiProjet.HtmlHelpers
+@addTagHelper *, AfiProjet
 @{
     ViewData["Title"] = "Details";
 }
@@ -71,10 +73,11 @@
             @Html.DisplayFor(model => model.DiscontinuedDate)
         </dd>
         <dt>
-           Photo
+            Photo
         </dt>
         <dd>
-            <img src="@Url.Action("GetPicture",new { id = Model.ProductId })" />
+            <img-product id="@Model.ProductId" />
+            @Html.ImgProduct(Model.ProductId)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ThumbnailPhotoFileName)
@@ -110,6 +113,6 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
-    <a href="javascript: history.back();" >Back to List</a>
+    <a href="javascript: history.back();">Back to List</a>
 </div>
 

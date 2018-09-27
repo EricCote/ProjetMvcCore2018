@@ -1,0 +1,8 @@
+﻿@Html.DropDownList("Category",
+    (SelectList)ViewData["listeCategories"],
+    new {
+        @class= "form-control",
+        onChange = "location.href='/category/'+this.value"
+    }
+ )
+

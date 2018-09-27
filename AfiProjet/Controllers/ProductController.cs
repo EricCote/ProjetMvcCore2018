@@ -35,8 +35,14 @@ namespace AfiProjet.Controllers
             int nbPages = ((nbProduits - 1) / 10) + 1;
             ViewBag.nbPages = nbPages;
             ViewBag.noPage = noPage;
+            ViewBag.listeCategories = new SelectList(_db.ProductCategories.
+                                               Where(c=>c.ProductCategoryId>4),
+                                               "Name", 
+                                               "Name", 
+                                               categoryName);
 
             return View(await requete1.ToListAsync());
+
         }
 
 
@@ -56,7 +62,12 @@ namespace AfiProjet.Controllers
             int nbPages = ((nbProduits - 1) / 10) + 1;
             ViewBag.nbPages = nbPages;
             ViewBag.noPage = noPage;
-                
+            ViewBag.listeCategories = new SelectList(_db.ProductCategories.
+                                               Where(c => c.ProductCategoryId > 4),
+                                               "Name",
+                                               "Name"
+                                               );
+
             return View( await requete1.ToListAsync());
         }
 
@@ -109,6 +120,8 @@ namespace AfiProjet.Controllers
         {
             if (ModelState.IsValid)
             {
+                product.ProductImage = new ProductImage();
+                _db.Entry(product.ProductImage).State = EntityState.Added;
                 _db.Add(product);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -199,7 +212,12 @@ namespace AfiProjet.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _db.Products.FindAsync(id);
+
+            product.ProductImage = new ProductImage();
+            _db.Entry(product.ProductImage).State = EntityState.Deleted;
+
             _db.Products.Remove(product);
+
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
