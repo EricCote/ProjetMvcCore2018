@@ -33,6 +33,7 @@ namespace AfiProjet.Models
         [StringLength(5)]
         public string Size { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
+        [RegularExpression(@"\d+", ErrorMessage ="Doit être un nombre")]
         public decimal? Weight { get; set; }
         [Column("ProductCategoryID")]
         public int? ProductCategoryId { get; set; }

@@ -1,4 +1,6 @@
-﻿<h1>Recherche</h1>
+﻿
+
+<h1>Recherche</h1>
 
 <p>Entrez la recherche de produits</p>
 
@@ -19,7 +21,7 @@
     const btnGetHtml = document.getElementById("btnGetHtml");
     const btnGetJson = document.getElementById("btnGetJson");
 
-    const getFilteredData = async e => {
+    const callHtml = async e => {
         e.preventDefault();
         const partialResults = await fetch(
                  "/Product/TableResult?filter=" + filter.value,
@@ -83,7 +85,7 @@
         </tr>`    );
 
 
-        let table =
+     let table =
      `<table class='table'>
        <thead>
         <tr>
@@ -107,22 +109,25 @@
             </th>
             <th></th>
         </tr>
-       </thead>
-           <tbody>
-                ${rows.join('')}
-            </tbody>
-        </table>
-                    `;
+        </thead>
+        <tbody>
+           ${rows.join('')}
+        </tbody>
+      </table>   `;
 
+        history.pushState({
+            result: table,
+            filter: filter.value
+          },
+          "ignored",
+          "/Product/Search/" + filter.value
+        );
 
-    result.innerHTML = table;
+        result.innerHTML = table;
    };
-   
 
-
-
-    btnGetHtml.addEventListener("click", getFilteredData);
     window.addEventListener("popstate", restoreData);
+    btnGetHtml.addEventListener("click", callHtml);
     btnGetJson.addEventListener("click", callJson);
 </script>
 
