@@ -34,6 +34,18 @@ namespace AfiProjet
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Name = "MonCookieSession";
+            });
+
+
             services.AddDbContext<AWContext>(options => 
                  options.UseSqlServer(
                         @"Data Source=(localdb)\msSqlLocalDb;" + 
@@ -61,9 +73,13 @@ namespace AfiProjet
 
             
 
-            app.UseHttpsRedirection();
+
+
+
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

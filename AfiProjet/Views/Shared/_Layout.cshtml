@@ -36,7 +36,13 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Product" asp-action="Index">Produits</a></li>
                     <li><a asp-area="" asp-controller="Product" asp-action="Search">Recherche</a></li>
+                    <li><a asp-area="" asp-controller="Product" asp-action="Writer">Writer</a></li>
+                    <li><a asp-area="" asp-controller="Product" asp-action="Reader">Reader</a></li>
+                    @if (User.IsInRole(@"vs2017eric\Admin")) { 
+                       <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+                    }
                 </ul>
+                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
         </div>
     </nav>

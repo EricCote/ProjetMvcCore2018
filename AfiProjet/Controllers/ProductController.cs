@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AfiProjet.Models;
+using AfiProjet.ViewModel;
+using Microsoft.AspNetCore.Http;
 
 namespace AfiProjet.Controllers
 {
@@ -22,6 +24,34 @@ namespace AfiProjet.Controllers
         public ActionResult Search(string id)
         {
             return View("Search", id);
+        }
+
+
+        public ActionResult Writer()
+        {
+            return View();
+        }
+
+        [HttpPost()]
+        public ActionResult Writer(MyProfile myProfile)
+        {
+            CookieOptions option = new CookieOptions();
+            option.Expires = new DateTimeOffset(DateTime.Now.AddYears(1));
+            Response.Cookies.Append("langue", myProfile.Langue, option);
+
+            HttpContext.Session.SetString("nom", myProfile.Nom);
+
+
+            return View(myProfile);
+        }
+
+
+        public ActionResult Reader()
+        {
+            var myProfile = new MyProfile();
+            myProfile.Langue = Request.Cookies["langue"];
+            myProfile.Nom = HttpContext.Session.GetString("nom");
+            return View(myProfile);
         }
 
 
@@ -67,6 +97,8 @@ namespace AfiProjet.Controllers
                                                categoryName);
 
             return View( await requete1.ToListAsync());
+
+             
 
         }
 
